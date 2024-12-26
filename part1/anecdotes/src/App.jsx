@@ -11,10 +11,21 @@ const anecdotes = [
   'The only way to go fast, is to go well.'
 ];
 
-const App = () => {
-  const [selected, setSelected] = useState(0);
+const MostVoted = ({text}) => {
+  if(!text) {
+    return <p>Vote first</p>
+  } 
 
-  const getRandomNum = (max) => {
+  return <p>{text}</p>
+}
+
+const App = () => {
+  const anecdotesLength = anecdotes.length;
+  const [votes, setVotes] = useState(new Array(anecdotesLength).fill(0));
+  const [selected, setSelected] = useState(getRandomNum(anecdotesLength));
+  const [mostVoted, setMostVoted] = useState(null);
+
+  function  getRandomNum(max) {
     return Math.floor(Math.random() * max);
   }
 
@@ -28,10 +39,25 @@ const App = () => {
     setSelected(randomNum);
   }
 
+  const handleVote = () => {
+    let updatedVotes = votes.concat();
+    updatedVotes[selected] = updatedVotes[selected]+1;
+    setVotes(updatedVotes);
+
+    const maxValue = Math.max(...updatedVotes);
+    const indexMaxValue = updatedVotes.indexOf(maxValue); 
+    setMostVoted(indexMaxValue);
+  }
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
+      <button onClick={handleVote}>Vote</button>
       <button onClick={handleClick}>Next anecdote</button>
+
+      <h1>Anecdote with most votes</h1>
+      <MostVoted text={anecdotes[mostVoted]} />
     </div>
   )
 }
