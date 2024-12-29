@@ -26,14 +26,13 @@ function App() {
   }
 
   const handleRemovePerson = (id) => {
-    console.log(`Remove ${id}`);
     personsServices.remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id));
       }).catch(error => {
         console.warn(`Can not delete constact with ${id}`, error);
         setPersons(persons.filter(p => p.id !== id));
-      })
+      });
   }
 
   const handleAddPerson = (event) => {
@@ -45,20 +44,27 @@ function App() {
       id: (persons.length+1).toString(),
     }
 
-    const isPersonNameExist = persons.some(person => person.name === newName);
-    if(isPersonNameExist) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName('');
-      return;
-    }
+    const personExisted = persons.find(person => person.name === newName);
+    if(personExisted) {
+      const updateMessage = `${newName} is already added, replace the old number(${personExisted.number}) with a new one`;
+      if(!window.confirm(updateMessage)) return;
 
-    personsServices.create(personNew)
-      .then(person => {
-        setPersons([...persons, person]);
-      }).finally(() => {
-        setNewName('');
-        setNewNumber('');
-      });
+      personsServices.update(personExisted.id, {...personExisted, number: newNumber})
+        .then((personUpdated) => {
+          const personsUpdated = persons.filter(person => person.id !== personExisted.id).concat(personUpdated);
+          setPersons(personsUpdated);
+          setNewName('');
+          setNewNumber('');
+        });
+    } else {
+      personsServices.create(personNew)
+        .then(person => {
+          setPersons([...persons, person]);
+        }).finally(() => {
+          setNewName('');
+          setNewNumber('');
+        });
+    }
   }
 
   useEffect(() => {
