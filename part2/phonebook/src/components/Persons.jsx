@@ -1,5 +1,12 @@
-const Persons = ({ persons }) => {
-  return persons.map(person => (<p key={person.name}>{person.name}: {person.number}</p>));
+const Persons = ({ persons, onRemove }) => {
+  return persons.map(person => {
+    return (
+      <div key={person.id}>
+        <p>{person.name}: {person.number}</p>
+        <button onClick={() => onRemove(person.id)}>Delete</button>
+      </div>
+    )
+  });
 };
 
 export default Persons;

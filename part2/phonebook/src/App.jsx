@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import personsServices from './services/persons';
+import Persons from './components/Persons';
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -22,6 +23,17 @@ function App() {
 
   const handleNewNumber = (event) => {
     setNewNumber(event.target.value);
+  }
+
+  const handleRemovePerson = (id) => {
+    console.log(`Remove ${id}`);
+    personsServices.remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id));
+      }).catch(error => {
+        console.warn(`Can not delete constact with ${id}`, error);
+        setPersons(persons.filter(p => p.id !== id));
+      })
   }
 
   const handleAddPerson = (event) => {
@@ -72,7 +84,7 @@ function App() {
           onChangeNumber={handleNewNumber} />
 
         <h2>Numbers</h2>
-          {personsToShow.map(person => (<p key={person.name}>{person.name}: {person.number}</p>))}
+          <Persons  persons={personsToShow} onRemove={handleRemovePerson} />
       </div>
     </>
   )
