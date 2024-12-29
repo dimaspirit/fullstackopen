@@ -1,14 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 
 function App() {
-  const [persons, setPersons] = useState([
-    { name: 'Mark Lobanov', number: '123-456-7890' },
-    { name: 'Dmytro Lobanov', number: '234-432-7110' },
-    { name: 'Viki Lobanov', number: '214-632-9110' },
-  ]);
+  const PERSONS_URL = 'http://localhost:3001/persons';
 
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
@@ -42,6 +40,13 @@ function App() {
     setNewName('');
     setNewNumber('');
   }
+
+  useEffect(() => {
+    axios.get(PERSONS_URL)
+      .then(response => {
+        setPersons(response.data);
+      });
+  }, []);
 
   return (
     <>
