@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
+import personsServices from './services/persons';
 
 function App() {
-  const PERSONS_URL = 'http://localhost:3001/persons';
-
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -29,6 +27,12 @@ function App() {
   const handleAddPerson = (event) => {
     event.preventDefault();
 
+    const personNew = {
+      name: newName,
+      number: newNumber,
+      id: (persons.length+1).toString(),
+    }
+
     const isPersonNameExist = persons.some(person => person.name === newName);
     if(isPersonNameExist) {
       alert(`${newName} is already added to phonebook`);
@@ -36,15 +40,19 @@ function App() {
       return;
     }
 
-    setPersons([...persons, { name: newName, number: newNumber }]);
-    setNewName('');
-    setNewNumber('');
+    personsServices.create(personNew)
+      .then(person => {
+        setPersons([...persons, person]);
+      }).finally(() => {
+        setNewName('');
+        setNewNumber('');
+      });
   }
 
   useEffect(() => {
-    axios.get(PERSONS_URL)
-      .then(response => {
-        setPersons(response.data);
+    personsServices.getAll()
+      .then(persons => {
+        setPersons(persons);
       });
   }, []);
 
