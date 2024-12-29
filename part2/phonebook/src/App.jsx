@@ -3,9 +3,20 @@ import { useState } from 'react';
 function App() {
   const [persons, setPersons] = useState([
     { name: 'Mark Lobanov', number: '123-456-7890' },
+    { name: 'Dmytro Lobanov', number: '234-432-7110' },
+    { name: 'Viki Lobanov', number: '214-632-9110' },
   ]);
+
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+
+  const [query, setQuery] = useState('');
+
+  const personsToShow = query === '' ? persons : persons.filter(person => person.name.toLowerCase().includes(query.toLowerCase()));
+
+  const handleQuery = (event) => {
+    setQuery(event.target.value.trim());
+  }
 
   const handleNewName = (event) => {
     setNewName(event.target.value);
@@ -33,7 +44,11 @@ function App() {
   return (
     <>
       <div>
-        <h2>Phonebook</h2>
+        <h1>Phonebook</h1>
+
+        <p>filter shown with <input type="text" value={query} onChange={handleQuery} /></p>
+
+        <h2>Add a new person</h2>
         <form onSubmit={handleAddPerson}>
           <div>
             Name: <input onChange={handleNewName} value={newName} />
@@ -47,7 +62,7 @@ function App() {
         </form>
 
         <h2>Numbers</h2>
-          {persons.map(person => (<p key={person.name}>{person.name}: {person.number}</p>))}
+          {personsToShow.map(person => (<p key={person.name}>{person.name}: {person.number}</p>))}
       </div>
     </>
   )
