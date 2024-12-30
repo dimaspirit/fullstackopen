@@ -10,6 +10,7 @@ function App() {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
 
   const [query, setQuery] = useState('');
 
@@ -27,20 +28,24 @@ function App() {
     setNewNumber(event.target.value);
   }
 
-  const setMessageNotification = (message) => {
+  const setMessageNotification = (message, type = 'success') => {
     setMessage(message);
+    setMessageType(type);
 
     setTimeout(() => {
       setMessage(null);
+      setMessageType(null);
     }, 5000);
   }
 
   const handleRemovePerson = (id) => {
-    personsServices.remove(id)
+    const personRemoved = persons.find(person => person.id === id);
+    personsServices.remove(personRemoved.id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id));
       }).catch(error => {
         console.warn(`Can not delete constact with ${id}`, error);
+        setMessageNotification(`Information of ${personRemoved.name} has already been removed from server`, 'error');
         setPersons(persons.filter(p => p.id !== id));
       });
   }
@@ -90,7 +95,7 @@ function App() {
     <>
       <div>
         <h1>Phonebook</h1>
-        <Notification message={message} />
+        <Notification type={messageType} message={message} />
         <Filter query={query} onChange={handleQuery} />
 
         <h2>Add a new person</h2>
