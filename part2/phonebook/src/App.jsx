@@ -3,11 +3,13 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import personsServices from './services/persons';
 import Persons from './components/Persons';
+import Notification from './components/Notification';
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [message, setMessage] = useState(null);
 
   const [query, setQuery] = useState('');
 
@@ -23,6 +25,14 @@ function App() {
 
   const handleNewNumber = (event) => {
     setNewNumber(event.target.value);
+  }
+
+  const setMessageNotification = (message) => {
+    setMessage(message);
+
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
   }
 
   const handleRemovePerson = (id) => {
@@ -55,11 +65,13 @@ function App() {
           setPersons(personsUpdated);
           setNewName('');
           setNewNumber('');
+          setMessageNotification(`Updated ${personUpdated.name}`);
         });
     } else {
       personsServices.create(personNew)
         .then(person => {
           setPersons([...persons, person]);
+          setMessageNotification(`Added ${person.name}`);
         }).finally(() => {
           setNewName('');
           setNewNumber('');
@@ -78,7 +90,7 @@ function App() {
     <>
       <div>
         <h1>Phonebook</h1>
-
+        <Notification message={message} />
         <Filter query={query} onChange={handleQuery} />
 
         <h2>Add a new person</h2>
