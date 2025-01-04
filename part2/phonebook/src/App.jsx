@@ -56,7 +56,6 @@ function App() {
     const personNew = {
       name: newName,
       number: newNumber,
-      id: (persons.length+1).toString(),
     }
 
     const personExisted = persons.find(person => person.name === newName);
