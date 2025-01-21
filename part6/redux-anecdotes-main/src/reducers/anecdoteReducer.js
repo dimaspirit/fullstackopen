@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -34,8 +34,6 @@ const reducer = (state = initialState, action) => {
     return state.map(a => a.id === id ? anecdoteUpdated : a)
   } else if(action.type === 'NEW') {
     const { content } = action.payload
-
-
     return state.concat([asObject(content)])
   }
 
@@ -60,4 +58,4 @@ export const create = (content) => {
   }
 }
 
-export default reducer
+export default anecdoteReducer

@@ -1,9 +1,18 @@
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { vote } from "../reducers/anecdoteReducer"
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state.sort((a, b) => b.votes - a.votes))
   const dispatch = useDispatch()
+
+  const anecdotes = useSelector(state => {
+    return state.anecdotes
+      .filter(anecdote => {
+        const { filter } = state
+
+        if(filter.trim() === '') return anecdote
+        return anecdote.content.includes(filter)
+      }).sort((a, b) => b.votes - a.votes)
+  }, shallowEqual)
 
   const handleVote = (id) => {
     console.log('vote', id)
