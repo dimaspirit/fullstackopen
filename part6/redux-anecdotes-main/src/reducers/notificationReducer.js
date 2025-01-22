@@ -12,6 +12,11 @@ const filterSlice = createSlice({
     show(state, action) {
       state.message = action.payload;
       state.isShown = true;
+
+      setTimeout(() => {
+        state.message = ''
+        state.isShown = false
+      }, 5000)
     },
   }
 })
