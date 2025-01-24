@@ -1,5 +1,5 @@
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { vote } from "../reducers/anecdoteReducer"
+import { voteForAnecdote } from "../reducers/anecdoteReducer"
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
@@ -15,8 +15,8 @@ const AnecdoteList = () => {
   }, shallowEqual)
 
   const handleVote = (id) => {
-    console.log('vote', id)
-    dispatch(vote(id))
+    const anecdote = anecdotes.find(a => a.id === id);
+    dispatch(voteForAnecdote(id, {votes: anecdote.votes+1}))
   }
 
   return (
