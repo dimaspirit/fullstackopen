@@ -17,13 +17,13 @@ const App = () => {
     console.log('vote')
   }
 
-  const anecdotes = [
-    {
-      "content": "If it hurts, do it more often",
-      "id": "47145",
-      "votes": 0
-    },
-  ]
+  // const anecdotes = [
+  //   {
+  //     "content": "If it hurts, do it more often",
+  //     "id": "47145",
+  //     "votes": 0
+  //   },
+  // ]
 
   if(result.isPending) {
     return <h1>Loading</h1>
@@ -32,6 +32,8 @@ const App = () => {
   if(result.isError) {
     return <h1>anecdote service not available due to problem in server</h1>
   }
+
+  const anecdotes = result.data
 
   return (
     <div>
