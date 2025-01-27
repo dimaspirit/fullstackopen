@@ -9,6 +9,7 @@ export const fetchAnecdotes = async () => {
 
 export const createAnecdote = async (anecdote) => {
   const result = await axois.post(BASE_URL, anecdote)
+  return result.data
 }
 
 export const updateAnecdote = async (anecdote) => {
