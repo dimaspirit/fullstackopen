@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Link, useParams } from "react-router"
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate } from "react-router"
 
 const Menu = () => {
   const padding = {
@@ -63,6 +63,8 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
+  let navigate = useNavigate();
+
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
@@ -76,6 +78,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    navigate('/')
   }
 
   return (
