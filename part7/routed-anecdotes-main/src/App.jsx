@@ -74,6 +74,14 @@ const CreateNew = (props) => {
   // const [author, setAuthor] = useState('')
   // const [info, setInfo] = useState('')
 
+  const handleReset = (event) => {
+    event.preventDefault()
+
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -97,13 +105,14 @@ const CreateNew = (props) => {
         </div>
         <div>
           author
-          <input {...author} />
+          <input name={author.name} value={author.value} onChange={author.onChange} />
         </div>
         <div>
           url for more info
           <input name={info.name} value={info.value} onChange={info.onChange} />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
