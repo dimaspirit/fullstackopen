@@ -18,12 +18,26 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect(() => {})
+  useEffect(() => {
+    if (name === '') {
+      return
+    }
+
+    axios
+      .get(`https://restcountries.com/v3.1/name/${name}`)
+      .then(response => {
+        setCountry({ data: response.data[0], found: true })
+      })
+      .catch(() => {
+        setCountry({ found: false })
+      })
+  }, [name])
 
   return country
 }
 
 const Country = ({ country }) => {
+  console.log('country', country)
   if (!country) {
     return null
   }
@@ -38,10 +52,10 @@ const Country = ({ country }) => {
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
+      <h3>{country.data.name.common}</h3>
+      <div>capital {country.data.capital[0]} </div>
       <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <img src={country.data.flags.svg} height='100' alt={`flag of ${country.data.name.common}`}/>  
     </div>
   )
 }
