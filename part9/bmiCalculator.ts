@@ -10,7 +10,7 @@ export const calculateBmi = (height: number, weight: number): string => {
   } else {
     return 'Obese';
   }
-}
+};
 
 const argv = process.argv.slice(2).map(p => Number(p));
 

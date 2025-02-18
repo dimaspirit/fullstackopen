@@ -25,7 +25,7 @@ const calculateExercises = (dailyExerciseHours: number[], targetAmount: number )
     target: targetAmount,
     average
   };
-}
+};
 
 const dailyExerciseHours = process.argv.slice(2, process.argv.length-1).map(h => Number(h));
 const targetAmount = process.argv.slice(process.argv.length-1).map(h => Number(h));
