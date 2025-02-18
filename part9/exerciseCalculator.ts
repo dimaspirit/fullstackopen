@@ -8,7 +8,7 @@ interface IResult {
   average: number
 }
 
-const calculateExercises = (dailyExerciseHours: number[], targetAmount: number ):IResult => {
+export const calculateExercises = (dailyExerciseHours: number[], targetAmount: number ):IResult => {
   const periodLength = dailyExerciseHours.length;
   const trainingDays = dailyExerciseHours.filter(h => h > 0).length;
   const average = dailyExerciseHours.reduce((a, b) => a + b, 0) / periodLength;
