@@ -1,4 +1,5 @@
 import express from 'express';
+import z from 'zod';
 import { toNewDiaryEntry } from '../utils';
 import patientsServices  from '../services/patients';
 
@@ -15,12 +16,11 @@ router.post('/', (req, res) => {
 
     res.json(addedPatient);
   } catch (error: unknown) {
-    let errorMessage = 'An error occurred.';
-
-    if(error instanceof Error) {
-      errorMessage += ' Error: ' + error.message;
+    if (error instanceof z.ZodError) {
+      res.status(400).send({ error: error.issues });
+    } else {
+      res.status(400).send({ error: 'unknown error' });
     }
-    res.status(400).send(errorMessage);
   }
 });
 
