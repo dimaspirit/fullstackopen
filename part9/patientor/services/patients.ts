@@ -6,6 +6,16 @@ const getPatients = ():IPatient[] => {
   return patientData;
 };
 
+const getPatient = (id: string):IPatient => {
+  const patient = patientData.find(patient => patient.id === id);
+
+  if(!patient) {
+    throw new Error('Patient not found');
+  }
+
+  return patient;
+};
+
 const getPublicpatients = (): PublicPatient[] => {
   return patientData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
     id, 
@@ -28,6 +38,7 @@ const addPatient = (patienRaw: NewPatientEntry): IPatient => {
 
 export default {
   getPatients,
+  getPatient,
   getPublicpatients,
   addPatient,
 };
